@@ -1,0 +1,1028 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Touchline — Soccer Skills Course</title>
+<meta name="description" content="Learn shooting, dribbling, ball control and speed at your own level — beginner to advanced. Every lesson funds gear for kids who can't afford it.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@500;600;700;800;900&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --pitch:#0E1F17;
+    --pitch-dark:#0A160F;
+    --paper:#F6F1E4;
+    --paper-dim:#EFE7D2;
+    --ink:#12201A;
+    --ink-soft:#4B5C51;
+    --beginner:#8FBF6E;
+    --intermediate:#E8A63B;
+    --advanced:#C4453A;
+    --line:rgba(246,241,228,0.14);
+    --line-strong:rgba(246,241,228,0.28);
+    --accent: var(--intermediate);
+    --shadow: 0 18px 40px rgba(6,14,9,0.35);
+    --radius: 4px;
+  }
+
+  *,*::before,*::after{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+    *,*::before,*::after{animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important;}
+  }
+
+  body{
+    margin:0;
+    background:var(--pitch);
+    color:var(--paper);
+    font-family:'Work Sans', sans-serif;
+    font-size:16px;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  h1,h2,h3,h4{
+    font-family:'Big Shoulders Display', sans-serif;
+    font-weight:800;
+    letter-spacing:0.01em;
+    line-height:0.95;
+    margin:0;
+    color:inherit;
+  }
+
+  p{margin:0;}
+  a{color:inherit;}
+  button{font-family:inherit; cursor:pointer;}
+
+  img,svg{display:block; max-width:100%;}
+
+  .wrap{
+    max-width:1180px;
+    margin:0 auto;
+    padding:0 28px;
+  }
+
+  :focus-visible{
+    outline:2px solid var(--intermediate);
+    outline-offset:3px;
+  }
+
+  /* ---------- NAV ---------- */
+  header.site-nav{
+    position:sticky; top:0; z-index:50;
+    background:rgba(14,31,23,0.92);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav-inner{
+    max-width:1180px; margin:0 auto; padding:16px 28px;
+    display:flex; align-items:center; justify-content:space-between; gap:20px;
+  }
+  .brand{
+    display:flex; align-items:center; gap:10px;
+    font-family:'Big Shoulders Display', sans-serif;
+    font-weight:800; font-size:1.5rem; letter-spacing:0.02em;
+    text-decoration:none;
+    white-space:nowrap;
+  }
+  .brand svg{width:26px; height:26px; flex-shrink:0;}
+
+  nav.level-tabs{
+    display:flex; gap:4px;
+    overflow-x:auto;
+    scrollbar-width:none;
+  }
+  nav.level-tabs::-webkit-scrollbar{display:none;}
+  nav.level-tabs a{
+    text-decoration:none;
+    font-size:0.92rem; font-weight:600;
+    color:var(--paper);
+    opacity:0.62;
+    padding:8px 14px;
+    border-radius:999px;
+    white-space:nowrap;
+    transition:opacity 0.15s ease, background 0.15s ease;
+  }
+  nav.level-tabs a:hover{opacity:1;}
+  nav.level-tabs a.active{
+    opacity:1;
+    background:rgba(246,241,228,0.09);
+  }
+  nav.level-tabs a[data-tier="beginner"].active{box-shadow:inset 0 -2px 0 var(--beginner);}
+  nav.level-tabs a[data-tier="intermediate"].active{box-shadow:inset 0 -2px 0 var(--intermediate);}
+  nav.level-tabs a[data-tier="advanced"].active{box-shadow:inset 0 -2px 0 var(--advanced);}
+
+  .nav-donate{
+    background:var(--intermediate);
+    color:var(--pitch-dark);
+    font-weight:700; font-size:0.9rem;
+    padding:9px 18px;
+    border-radius:999px;
+    text-decoration:none;
+    white-space:nowrap;
+    transition:transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .nav-donate:hover{transform:translateY(-1px); box-shadow:0 8px 18px rgba(232,166,59,0.35);}
+
+  /* ---------- HERO ---------- */
+  .hero{
+    position:relative;
+    overflow:hidden;
+    padding:96px 0 110px;
+    background:
+      radial-gradient(ellipse 900px 500px at 82% -10%, rgba(143,191,110,0.14), transparent 60%),
+      var(--pitch);
+    border-bottom:1px solid var(--line);
+  }
+  .hero-arc{
+    position:absolute; right:-140px; top:-60px;
+    width:640px; height:640px; opacity:0.9;
+    pointer-events:none;
+  }
+  .hero-arc path{
+    fill:none; stroke:var(--line-strong); stroke-width:1.5;
+    stroke-dasharray:2400;
+    stroke-dashoffset:2400;
+    animation:draw 2.4s ease forwards 0.2s;
+  }
+  @keyframes draw{ to{ stroke-dashoffset:0; } }
+
+  .hero-inner{position:relative; z-index:1;}
+  .eyebrow-free{
+    font-size:0.95rem; font-weight:600; color:var(--beginner);
+    margin-bottom:18px;
+  }
+  .hero h1{
+    font-size:clamp(3rem, 8vw, 6.4rem);
+    max-width:14ch;
+    color:var(--paper);
+  }
+  .hero h1 em{
+    font-style:normal; color:var(--intermediate);
+  }
+  .hero .sub{
+    margin-top:24px;
+    font-size:1.2rem;
+    max-width:52ch;
+    color:rgba(246,241,228,0.78);
+  }
+  .hero-actions{
+    margin-top:38px;
+    display:flex; flex-wrap:wrap; gap:14px;
+  }
+  .btn{
+    display:inline-flex; align-items:center; gap:8px;
+    padding:14px 26px;
+    border-radius:999px;
+    font-weight:700; font-size:1rem;
+    text-decoration:none;
+    border:1px solid transparent;
+    transition:transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+  }
+  .btn-primary{background:var(--paper); color:var(--pitch-dark);}
+  .btn-primary:hover{transform:translateY(-2px); box-shadow:var(--shadow);}
+  .btn-ghost{border-color:var(--line-strong); color:var(--paper);}
+  .btn-ghost:hover{background:rgba(246,241,228,0.08);}
+
+  /* ---------- TIER PICKER ---------- */
+  .picker{padding:80px 0 40px;}
+  .picker-head{max-width:56ch; margin-bottom:44px;}
+  .picker-head h2{font-size:clamp(2rem,4.4vw,2.9rem); color:var(--paper);}
+  .picker-head p{margin-top:14px; color:rgba(246,241,228,0.7); font-size:1.05rem;}
+
+  .tier-grid{
+    display:grid; grid-template-columns:repeat(3,1fr); gap:18px;
+  }
+  .tier-card{
+    background:rgba(246,241,228,0.04);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:30px 26px 26px;
+    text-align:left;
+    color:inherit;
+    text-decoration:none;
+    display:flex; flex-direction:column; gap:16px;
+    transition:transform 0.18s ease, border-color 0.18s ease, background 0.18s ease;
+    position:relative;
+    overflow:hidden;
+  }
+  .tier-card::before{
+    content:"";
+    position:absolute; left:0; top:0; bottom:0; width:4px;
+    background:var(--tier-color);
+  }
+  .tier-card:hover{
+    transform:translateY(-4px);
+    border-color:var(--line-strong);
+    background:rgba(246,241,228,0.07);
+  }
+  .tier-num{
+    font-family:'Big Shoulders Display'; font-weight:800; font-size:1rem;
+    color:var(--tier-color);
+  }
+  .tier-card h3{font-size:2rem; color:var(--paper);}
+  .tier-card p{color:rgba(246,241,228,0.68); font-size:0.98rem;}
+  .tier-skills{
+    display:flex; flex-wrap:wrap; gap:8px; margin-top:auto;
+  }
+  .tier-skills span{
+    font-size:0.78rem; font-weight:600;
+    padding:5px 10px; border-radius:999px;
+    background:rgba(246,241,228,0.08);
+    color:rgba(246,241,228,0.85);
+  }
+
+  /* ---------- LEVEL SECTIONS ---------- */
+  .level-section{
+    padding:90px 0;
+    border-top:1px solid var(--line);
+  }
+  .level-head{
+    display:flex; align-items:baseline; gap:18px; flex-wrap:wrap;
+    margin-bottom:10px;
+  }
+  .level-head .tag{
+    font-size:0.85rem; font-weight:700;
+    color:var(--tier-color);
+    text-transform:capitalize;
+  }
+  .level-head h2{
+    font-size:clamp(2.4rem, 6vw, 4rem);
+    color:var(--paper);
+  }
+  .level-tagline{
+    max-width:60ch; color:rgba(246,241,228,0.68); font-size:1.05rem;
+    margin-bottom:48px;
+  }
+
+  .skills-grid{
+    display:grid; grid-template-columns:repeat(4,1fr); gap:14px;
+  }
+  .skill-card{
+    background:rgba(246,241,228,0.04);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:24px 20px;
+    text-align:left;
+    color:inherit;
+    display:flex; flex-direction:column; gap:14px;
+    transition:border-color 0.15s ease, background 0.15s ease;
+  }
+  .skill-card svg{width:30px; height:30px; color:var(--tier-color);}
+  .skill-card h3{font-size:1.5rem; color:var(--paper);}
+  .skill-card .count{font-size:0.85rem; color:rgba(246,241,228,0.55);}
+  .skill-card button.expand{
+    margin-top:6px;
+    align-self:flex-start;
+    background:none; border:1px solid var(--line-strong);
+    color:var(--paper);
+    padding:8px 16px; border-radius:999px; font-size:0.85rem; font-weight:600;
+    display:flex; align-items:center; gap:6px;
+    transition:background 0.15s ease, border-color 0.15s ease;
+  }
+  .skill-card button.expand:hover{background:rgba(246,241,228,0.08);}
+  .skill-card button.expand svg{width:14px; height:14px; color:currentColor; transition:transform 0.2s ease;}
+  .skill-card.open button.expand svg{transform:rotate(45deg);}
+  .skill-card.open{border-color:var(--tier-color);}
+
+  .tip-list{
+    grid-column:1 / -1;
+    display:none;
+    margin-top:6px;
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    overflow:hidden;
+  }
+  .tip-list.visible{display:block;}
+  .tip-row{
+    display:grid; grid-template-columns:56px 1fr auto;
+    gap:18px; align-items:center;
+    padding:18px 22px;
+    background:rgba(246,241,228,0.02);
+    border:none; width:100%;
+    text-align:left; color:inherit;
+    border-bottom:1px solid var(--line);
+    transition:background 0.15s ease;
+  }
+  .tip-row:last-child{border-bottom:none;}
+  .tip-row:hover{background:rgba(246,241,228,0.06);}
+  .tip-num{
+    font-family:'Big Shoulders Display'; font-weight:800; font-size:1.8rem;
+    color:var(--tier-color);
+  }
+  .tip-copy h4{font-size:1.1rem; font-weight:700; color:var(--paper); margin-bottom:4px;}
+  .tip-copy p{font-size:0.92rem; color:rgba(246,241,228,0.62);}
+  .tip-open{
+    display:flex; align-items:center; gap:8px;
+    font-size:0.82rem; font-weight:700; color:var(--tier-color);
+    white-space:nowrap;
+  }
+  .tip-open svg{width:16px; height:16px;}
+
+  /* ---------- ABOUT ---------- */
+  .about{
+    background:var(--paper);
+    color:var(--ink);
+    padding:100px 0 90px;
+    border-top:1px solid var(--line);
+    border-bottom:1px solid var(--line);
+  }
+  .about .tag{font-size:0.85rem; font-weight:700; color:#8A6A1F;}
+  .about h2{font-size:clamp(2.2rem,5vw,3.4rem); color:var(--ink); margin-top:10px; max-width:16ch;}
+  .about-lede{margin-top:22px; font-size:1.08rem; color:var(--ink-soft); max-width:64ch;}
+  .about-lede p + p{margin-top:14px;}
+  .about-school{
+    display:inline-flex; align-items:center; gap:8px;
+    margin-top:22px;
+    font-size:0.88rem; font-weight:700;
+    color:var(--ink);
+    background:rgba(18,32,26,0.06);
+    padding:8px 16px; border-radius:999px;
+  }
+  .about-school svg{width:15px; height:15px;}
+
+  .team-grid{
+    margin-top:56px;
+    display:grid; grid-template-columns:repeat(3,1fr); gap:20px;
+  }
+  .team-card{
+    background:#fff;
+    border:1px solid rgba(18,32,26,0.1);
+    border-radius:6px;
+    padding:30px 26px;
+    display:flex; flex-direction:column; gap:16px;
+    position:relative;
+    overflow:hidden;
+  }
+  .team-card::before{
+    content:""; position:absolute; left:0; top:0; right:0; height:4px;
+    background:var(--role-color, var(--intermediate));
+  }
+  .team-avatar{
+    width:62px; height:62px; border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Big Shoulders Display'; font-weight:800; font-size:1.4rem;
+    color:#fff;
+    background:var(--role-color, var(--intermediate));
+  }
+  .team-role{
+    font-size:0.78rem; font-weight:700; letter-spacing:0.03em; text-transform:uppercase;
+    color:var(--role-color, var(--intermediate));
+  }
+  .team-name{font-size:1.35rem; font-weight:700; font-family:'Big Shoulders Display'; color:var(--ink); line-height:1.05;}
+  .team-bio{font-size:0.92rem; color:var(--ink-soft); line-height:1.55;}
+
+  /* ---------- DONATE ---------- */
+  .donate{
+    background:var(--paper);
+    color:var(--ink);
+    padding:100px 0;
+  }
+  .donate-top{
+    max-width:64ch;
+    margin-bottom:56px;
+  }
+  .donate .tag{font-size:0.85rem; font-weight:700; color:#8A6A1F;}
+  .donate h2{font-size:clamp(2.2rem,5vw,3.4rem); color:var(--ink); margin-top:10px;}
+  .donate .lede{margin-top:20px; font-size:1.08rem; color:var(--ink-soft); max-width:52ch;}
+
+  .tier-donate-grid{
+    display:grid; grid-template-columns:repeat(4,1fr); gap:14px;
+  }
+  .give-card{
+    background:#fff;
+    border:1px solid rgba(18,32,26,0.12);
+    border-radius:var(--radius);
+    padding:26px 20px;
+    display:flex; flex-direction:column; gap:12px;
+  }
+  .give-amount{font-family:'Big Shoulders Display'; font-weight:800; font-size:2.4rem; color:var(--ink);}
+  .give-card p{font-size:0.9rem; color:var(--ink-soft); flex-grow:1;}
+  .pf-form{display:flex; flex-direction:column;}
+  .give-btn{
+    background:var(--ink); color:var(--paper);
+    border:none;
+    border-radius:999px; text-align:center;
+    padding:11px; font-weight:700; font-size:0.92rem;
+    text-decoration:none;
+    width:100%;
+    transition:background 0.15s ease;
+  }
+  .give-btn:hover{background:#2a3b31;}
+  .custom-amount-label{
+    font-size:0.78rem; font-weight:600; color:rgba(18,32,26,0.75);
+    margin-bottom:6px; display:block;
+  }
+  .custom-amount-input{
+    width:100%; margin-bottom:10px;
+    padding:10px 12px;
+    border-radius:6px; border:1px solid rgba(18,32,26,0.25);
+    font-family:'Work Sans'; font-size:0.95rem;
+    background:#fff;
+  }
+  .pay-methods{
+    font-size:0.76rem; color:var(--ink-soft);
+    text-align:center;
+    letter-spacing:0.01em;
+  }
+  .give-card.custom{background:var(--intermediate); border-color:transparent;}
+  .give-card.custom .give-amount{color:var(--pitch-dark);}
+  .give-card.custom p{color:rgba(18,32,26,0.75);}
+  .give-card.custom .give-btn{background:var(--pitch-dark); color:var(--paper);}
+  .give-card.custom .pay-methods{color:rgba(18,32,26,0.7);}
+
+  /* ---------- FOOTER ---------- */
+  footer{
+    background:var(--pitch-dark);
+    padding:52px 0 40px;
+    border-top:1px solid var(--line);
+  }
+  .footer-inner{
+    display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:20px;
+  }
+  .footer-brand{
+    display:flex; align-items:center; gap:10px;
+    font-family:'Big Shoulders Display'; font-weight:800; font-size:1.3rem;
+  }
+  .footer-brand svg{width:22px; height:22px;}
+  footer .fine{font-size:0.85rem; color:rgba(246,241,228,0.45);}
+  .footer-links{display:flex; gap:22px; font-size:0.9rem;}
+  .footer-links a{text-decoration:none; color:rgba(246,241,228,0.7);}
+  .footer-links a:hover{color:var(--paper);}
+  .footer-contact{display:flex; gap:20px; font-size:0.9rem;}
+  .footer-contact a{text-decoration:none; color:rgba(246,241,228,0.7); white-space:nowrap;}
+  .footer-contact a:hover{color:var(--paper);}
+
+  /* ---------- MODAL ---------- */
+  .modal-backdrop{
+    position:fixed; inset:0; z-index:100;
+    background:rgba(6,12,8,0.72);
+    display:none;
+    align-items:flex-start; justify-content:center;
+    padding:5vh 20px;
+    overflow-y:auto;
+  }
+  .modal-backdrop.open{display:flex;}
+  .modal{
+    background:var(--paper); color:var(--ink);
+    max-width:720px; width:100%;
+    border-radius:6px;
+    overflow:hidden;
+    box-shadow:0 30px 80px rgba(0,0,0,0.5);
+  }
+  .modal-head{
+    display:flex; justify-content:space-between; align-items:flex-start;
+    padding:26px 28px 0;
+  }
+  .modal-tier{font-size:0.8rem; font-weight:700; color:var(--tier-color, var(--intermediate));}
+  .modal-head h3{font-size:1.9rem; margin-top:6px; color:var(--ink);}
+  .modal-close{
+    background:rgba(18,32,26,0.06); border:none; border-radius:50%;
+    width:34px; height:34px; flex-shrink:0;
+    display:flex; align-items:center; justify-content:center;
+    color:var(--ink);
+  }
+  .modal-close:hover{background:rgba(18,32,26,0.12);}
+  .modal-close svg{width:16px; height:16px;}
+
+  .media-slot{
+    margin:22px 28px 0;
+    aspect-ratio:16/9;
+    border-radius:4px;
+    border:1.5px dashed rgba(18,32,26,0.3);
+    background:
+      repeating-linear-gradient(135deg, rgba(18,32,26,0.05) 0 12px, transparent 12px 24px);
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    gap:10px; text-align:center; padding:20px;
+  }
+  .media-slot svg{width:34px; height:34px; color:var(--ink-soft);}
+  .media-slot .slot-title{font-weight:700; font-size:0.95rem; color:var(--ink);}
+  .media-slot .slot-path{font-size:0.78rem; color:var(--ink-soft); word-break:break-all;}
+
+  .modal-body{padding:22px 28px 10px; font-size:0.98rem; color:var(--ink-soft);}
+  .modal-body p + p{margin-top:10px;}
+
+  .photo-strip{
+    display:grid; grid-template-columns:repeat(3,1fr); gap:10px;
+    padding:6px 28px 30px;
+  }
+  .photo-slot{
+    aspect-ratio:4/3; border-radius:4px;
+    border:1px dashed rgba(18,32,26,0.28);
+    background:repeating-linear-gradient(45deg, rgba(18,32,26,0.05) 0 8px, transparent 8px 16px);
+    display:flex; align-items:center; justify-content:center;
+  }
+  .photo-slot svg{width:20px; height:20px; color:var(--ink-soft);}
+
+  /* ---------- RESPONSIVE ---------- */
+  @media (max-width: 980px){
+    .tier-grid{grid-template-columns:1fr;}
+    .skills-grid{grid-template-columns:repeat(2,1fr);}
+    .donate-top{grid-template-columns:1fr; gap:34px;}
+    .tier-donate-grid{grid-template-columns:repeat(2,1fr);}
+    .team-grid{grid-template-columns:1fr;}
+  }
+  @media (max-width: 640px){
+    .nav-inner{padding:14px 18px;}
+    .wrap{padding:0 18px;}
+    .skills-grid{grid-template-columns:1fr;}
+    .tip-row{grid-template-columns:36px 1fr; row-gap:8px;}
+    .tip-open{grid-column:2; }
+    .tier-donate-grid{grid-template-columns:1fr;}
+    .photo-strip{grid-template-columns:repeat(3,1fr);}
+    .hero-arc{width:420px; height:420px; right:-160px;}
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ NAV ============ -->
+<header class="site-nav">
+  <div class="nav-inner">
+    <a href="#top" class="brand">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M12 7l3.5 2.5-1.3 4.1H9.8L8.5 9.5 12 7z"/><path d="M12 3v4M3 12h4M12 21v-4M21 12h-4"/></svg>
+      Touchline
+    </a>
+    <nav class="level-tabs" aria-label="Skill levels">
+      <a href="#beginner" data-tier="beginner">Beginner</a>
+      <a href="#intermediate" data-tier="intermediate">Intermediate</a>
+      <a href="#advanced" data-tier="advanced">Advanced</a>
+      <a href="#about">About</a>
+    </nav>
+    <a href="#donate" class="nav-donate">Donate</a>
+  </div>
+</header>
+
+<!-- ============ HERO ============ -->
+<section class="hero" id="top">
+  <svg class="hero-arc" viewBox="0 0 640 640" aria-hidden="true">
+    <path d="M20,320 A300,300 0 0,1 320,20"/>
+    <path d="M320,20 A300,300 0 0,1 620,320"/>
+    <circle cx="320" cy="320" r="90" fill="none" stroke="var(--line-strong)" stroke-width="1.5"/>
+  </svg>
+  <div class="wrap hero-inner">
+    <div class="eyebrow-free">A soccer course for every level</div>
+    <h1>Train your <em>touch</em>,<br>your feet, and<br>your first step.</h1>
+    <p class="sub">Shooting, dribbling, ball control and speed — broken into beginner, intermediate and advanced lessons, each with a video, a written breakdown, and photos of the technique.</p>
+    <div class="hero-actions">
+      <a href="#beginner" class="btn btn-primary">Start at beginner</a>
+      <a href="#donate" class="btn btn-ghost">Fund a kid's kit</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TIER PICKER ============ -->
+<section class="picker wrap">
+  <div class="picker-head">
+    <h2>Pick where you're starting from</h2>
+    <p>Each level covers the same four skills — shooting, dribbling, ball control, and speed — but the drills get harder as you climb.</p>
+  </div>
+  <div class="tier-grid" id="tierGrid"></div>
+</section>
+
+<!-- ============ LEVEL SECTIONS (built by JS) ============ -->
+<div id="levelSections"></div>
+
+<!-- ============ ABOUT ============ -->
+<section class="about" id="about">
+  <div class="wrap">
+    <div class="tag">Our story</div>
+    <h2>Why we built this</h2>
+    <div class="about-lede">
+      <p>Touchline started as a school project at the American International School of Cape Town — but the idea behind it is bigger than that. A lot of kids grow up loving football without ever having a real ball, a decent pair of boots, or someone to show them the basics. Most people don't think about that gap until it's pointed out to them.</p>
+      <p>We wanted to build something that does two things at once: teach the game properly, for free, to anyone with a phone or a laptop — and turn that into a way of funding real gear for kids and schools that are going without.</p>
+    </div>
+    <div class="about-school">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M2 9l10-5 10 5-10 5-10-5z"/><path d="M6 11v5c0 1.5 3 3 6 3s6-1.5 6-3v-5"/></svg>
+      American International School of Cape Town
+    </div>
+
+    <div class="team-grid">
+      <div class="team-card" style="--role-color:var(--intermediate)">
+        <div class="team-avatar">SZ</div>
+        <div>
+          <div class="team-role">Web Developer</div>
+          <div class="team-name">Shaam Zerisenay<br>Semedar Andeghiorgis</div>
+        </div>
+        <p class="team-bio">Built and designed this site — the course layout, the lesson structure, and the donation page. A student at the American International School of Cape Town, working to make sure the technology side never gets in the way of the mission.</p>
+      </div>
+      <div class="team-card" style="--role-color:var(--beginner)">
+        <div class="team-avatar">IS</div>
+        <div>
+          <div class="team-role">Director</div>
+          <div class="team-name">Iman Standfield</div>
+        </div>
+        <p class="team-bio">Keeps the project moving — coordinating the team, the donation drives, and getting gear into the hands of the kids and schools who need it. Also a student at the American International School of Cape Town.</p>
+      </div>
+      <div class="team-card" style="--role-color:var(--advanced)">
+        <div class="team-avatar">JS</div>
+        <div>
+          <div class="team-role">Coach</div>
+          <div class="team-name">Jaydon Singh</div>
+        </div>
+        <p class="team-bio">Wrote and demonstrates the training content across all three levels, drawing on his own experience playing the game. Rounds out the team from the American International School of Cape Town.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ DONATE ============ -->
+<section class="donate" id="donate">
+  <div class="wrap">
+    <div class="donate-top">
+      <div>
+        <div class="tag">Give back</div>
+        <h2>Not every kid has boots that fit.</h2>
+        <p class="lede">This course is free. If it helped your game, consider funding gear for a kid or a school team that's short on equipment — a pair of boots, a proper ball, or a full kit for someone who's never had one.</p>
+      </div>
+    </div>
+
+    <!--
+      PAYFAST SETUP (required before donations work):
+      1. Create a merchant account at payfast.co.za
+      2. In your PayFast dashboard, go to Settings and copy your Merchant ID and Merchant Key
+      3. Replace MERCHANT_ID_HERE and MERCHANT_KEY_HERE below (they appear 4 times, once per form)
+      4. Replace https://yourdomain.com with your real published site URL (e.g. your GitHub Pages URL)
+         in every return_url / cancel_url / notify_url below
+      5. The action URL below (payfast.co.za/eng/process) is PayFast's LIVE checkout.
+         To test first, use https://sandbox.payfast.co.za/eng/process instead, with the
+         sandbox Merchant ID 10000100 and Merchant Key 46f0cd694581a, then switch back
+         to your real live details before publishing for real.
+    -->
+    <div class="tier-donate-grid">
+      <div class="give-card">
+        <div class="give-amount">R100</div>
+        <p>Covers a pair of boots for a kid outgrowing their old ones.</p>
+        <form action="https://www.payfast.co.za/eng/process" method="post" class="pf-form">
+          <input type="hidden" name="merchant_id" value="MERCHANT_ID_HERE">
+          <input type="hidden" name="merchant_key" value="MERCHANT_KEY_HERE">
+          <input type="hidden" name="return_url" value="https://yourdomain.com/#donate">
+          <input type="hidden" name="cancel_url" value="https://yourdomain.com/#donate">
+          <input type="hidden" name="notify_url" value="https://yourdomain.com/#donate">
+          <input type="hidden" name="amount" value="100.00">
+          <input type="hidden" name="item_name" value="Touchline donation - R100">
+          <button type="submit" class="give-btn">Donate R100</button>
+        </form>
+        <div class="pay-methods">Card · Instant EFT</div>
+      </div>
+      <div class="give-card">
+        <div class="give-amount">R300</div>
+        <p>A match ball and a pump for a team that's sharing one flat ball.</p>
+        <form action="https://www.payfast.co.za/eng/process" method="post" class="pf-form">
+          <input type="hidden" name="merchant_id" value="MERCHANT_ID_HERE">
+          <input type="hidden" name="merchant_key" value="MERCHANT_KEY_HERE">
+          <input type="hidden" name="return_url" value="https://yourdomain.com/#donate">
+          <input type="hidden" name="cancel_url" value="https://yourdomain.com/#donate">
+          <input type="hidden" name="notify_url" value="https://yourdomain.com/#donate">
+          <input type="hidden" name="amount" value="300.00">
+          <input type="hidden" name="item_name" value="Touchline donation - R300">
+          <button type="submit" class="give-btn">Donate R300</button>
+        </form>
+        <div class="pay-methods">Card · Instant EFT</div>
+      </div>
+      <div class="give-card">
+        <div class="give-amount">R800</div>
+        <p>A full kit — boots, shin guards, socks and a ball — for one child.</p>
+        <form action="https://www.payfast.co.za/eng/process" method="post" class="pf-form">
+          <input type="hidden" name="merchant_id" value="MERCHANT_ID_HERE">
+          <input type="hidden" name="merchant_key" value="MERCHANT_KEY_HERE">
+          <input type="hidden" name="return_url" value="https://yourdomain.com/#donate">
+          <input type="hidden" name="cancel_url" value="https://yourdomain.com/#donate">
+          <input type="hidden" name="notify_url" value="https://yourdomain.com/#donate">
+          <input type="hidden" name="amount" value="800.00">
+          <input type="hidden" name="item_name" value="Touchline donation - R800">
+          <button type="submit" class="give-btn">Donate R800</button>
+        </form>
+        <div class="pay-methods">Card · Instant EFT</div>
+      </div>
+      <div class="give-card custom">
+        <div class="give-amount">Any</div>
+        <p>Choose your own amount — every bit goes toward gear for a school or club that needs it.</p>
+        <form action="https://www.payfast.co.za/eng/process" method="post" class="pf-form">
+          <input type="hidden" name="merchant_id" value="MERCHANT_ID_HERE">
+          <input type="hidden" name="merchant_key" value="MERCHANT_KEY_HERE">
+          <input type="hidden" name="return_url" value="https://yourdomain.com/#donate">
+          <input type="hidden" name="cancel_url" value="https://yourdomain.com/#donate">
+          <input type="hidden" name="notify_url" value="https://yourdomain.com/#donate">
+          <input type="hidden" name="item_name" value="Touchline donation - custom amount">
+          <label class="custom-amount-label" for="customAmount">Enter amount (R)</label>
+          <input type="number" id="customAmount" name="amount" min="10" step="1" placeholder="e.g. 250" required class="custom-amount-input">
+          <button type="submit" class="give-btn">Give this amount</button>
+        </form>
+        <div class="pay-methods">Card · Instant EFT</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div class="wrap footer-inner">
+    <div class="footer-brand">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M12 7l3.5 2.5-1.3 4.1H9.8L8.5 9.5 12 7z"/></svg>
+      Touchline
+    </div>
+    <div class="footer-links">
+      <a href="#beginner">Beginner</a>
+      <a href="#intermediate">Intermediate</a>
+      <a href="#advanced">Advanced</a>
+      <a href="#about">About</a>
+      <a href="#donate">Donate</a>
+    </div>
+    <div class="footer-contact">
+      <a href="mailto:touchline@gmail.com">touchline@gmail.com</a>
+      <a href="tel:+27715946277">+27 71 594 6277</a>
+    </div>
+  </div>
+</footer>
+
+<!-- ============ MODAL ============ -->
+<div class="modal-backdrop" id="modalBackdrop">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal-head">
+      <div>
+        <div class="modal-tier" id="modalTier">Beginner · Shooting</div>
+        <h3 id="modalTitle">Tip title</h3>
+      </div>
+      <button class="modal-close" id="modalClose" aria-label="Close">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
+
+    <div class="media-slot" id="modalVideo">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M10 9l5 3-5 3V9z" fill="currentColor" stroke="none"/></svg>
+      <div class="slot-title">Video coming soon</div>
+      <div class="slot-path" id="modalVideoPath">videos/beginner-shooting-1.mp4</div>
+    </div>
+
+    <div class="modal-body">
+      <p id="modalDesc">Full description of the drill goes here.</p>
+    </div>
+
+    <div class="photo-strip" id="modalPhotos">
+      <div class="photo-slot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="11" r="2"/><path d="M21 17l-5-4-4 3-3-2-6 5"/></svg></div>
+      <div class="photo-slot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="11" r="2"/><path d="M21 17l-5-4-4 3-3-2-6 5"/></svg></div>
+      <div class="photo-slot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="11" r="2"/><path d="M21 17l-5-4-4 3-3-2-6 5"/></svg></div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ===========================================================
+   CONTENT DATA
+   To add your real media: put video files in /videos and
+   photos in /images (folders next to this index.html), then
+   change VIDEO_PATH / PHOTO_PATHS below so they point at your
+   real filenames. Everything else updates itself.
+=========================================================== */
+const ICONS = {
+  shooting: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4.5"/><circle cx="12" cy="12" r="0.8" fill="currentColor"/></svg>',
+  dribbling: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 18c3-2 3-6 0-8 4 1 6-1 6-4 1 3 4 4 8 3-3 2-3 6 0 8-4-1-6 1-6 4-1-3-4-4-8-3z"/></svg>',
+  control: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="9" r="4"/><path d="M6 20c0-3 2.5-5 6-5s6 2 6 5"/></svg>',
+  speed: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M13 3L4 14h6l-1 7 9-11h-6l1-7z"/></svg>'
+};
+
+const SKILL_NAMES = {shooting:'Shooting', dribbling:'Dribbling', control:'Ball control', speed:'Speed'};
+
+const LEVELS = [
+  {
+    id:'beginner', name:'Beginner', color:'var(--beginner)',
+    tagline:"Start here if you're new to the game. These lessons focus on the basics you'll use in every session from now on.",
+    skills:{
+      shooting:[
+        {t:'Plant foot placement', d:'Place your non-kicking foot beside the ball, pointing at your target.', l:"Your plant foot does most of the work in a shot — where it points is roughly where the ball goes. Set it about a hand's width from the ball, toes aimed at your target, knee slightly bent."},
+        {t:'Strike with the right part of your foot', d:'Use your laces for power and the inside of your foot for accuracy.', l:'Laces (the top of your foot) give you power and are best for shots at distance. The inside of your foot gives you more surface area and control, which is safer for shots closer to goal.'},
+        {t:'Eyes on the ball at contact', d:'Watch the ball all the way through your strike, not the goal.', l:"It's tempting to look up to see where the keeper is, but glance up before you strike, then bring your eyes back to the ball for the actual contact. Mishit shots are almost always caused by looking up too early."},
+        {t:'Follow through toward the target', d:'Let your kicking leg swing all the way through the ball, not stop at contact.', l:"A short, stabbing motion kills your power and accuracy. Swing through the ball like you're finishing a golf swing — your foot should keep moving toward the target after contact."},
+        {t:'Practice from a stationary ball first', d:'Master the technique with the ball sitting still before adding any touches.', l:'Set up 10 balls in a row and strike each one from a standstill, resetting your foot placement each time. Once the technique is consistent, start adding a small touch before the shot.'}
+      ],
+      dribbling:[
+        {t:'Keep the ball close', d:'Use small touches so the ball never gets more than a stride away from you.', l:'A big first touch looks fast but gives defenders time to close you down. Practice tapping the ball forward just far enough that you have to jog, not sprint, to reach it.'},
+        {t:'Use both feet', d:'Practice with your weaker foot as much as your stronger one.', l:'Set a rule for training: every dribbling drill gets repeated with your other foot leading. It will feel clumsy at first — that discomfort is exactly what improves it.'},
+        {t:'Keep your head up', d:'Glance up between touches so you can see space and teammates.', l:"You don't need to watch the ball constantly — your feet already know roughly where it is. Practice dribbling in a straight line while counting fingers a partner holds up across the field."},
+        {t:'Use the inside and outside of your foot', d:"Don't rely only on your instep — the outside of your foot opens up quicker changes of direction.", l:'Dribble through cones alternating inside-foot and outside-foot touches on the same foot. This builds the habit of changing direction without slowing down.'},
+        {t:'Practice slaloming through cones', d:'Set up 6–8 cones in a line and weave through them at a jog, then a run.', l:'Start slow and focus on a touch with every step. Once you can do it without looking down, time yourself and try to beat your time each session.'}
+      ],
+      control:[
+        {t:'Cushion the ball on first touch', d:"Relax your foot on contact so the ball drops dead instead of bouncing away.", l:"As the ball arrives, pull your foot back slightly at the moment of contact — like catching an egg. This 'cushioning' takes the pace off the ball so it lands right where you want it."},
+        {t:'Use different surfaces', d:'Practice receiving with your foot, thigh, and chest, not just your feet.', l:'Have a partner toss balls to you at different heights. Foot for ground balls, thigh for waist-height, chest for anything higher — each surface should cushion the ball down to your feet.'},
+        {t:'Get low over bouncing balls', d:'Bend your knees and get your body over the ball to control awkward bounces.', l:"Standing tall makes bouncing balls harder to read. Bend low, keep your hands out for balance, and let the ball come up to you rather than reaching down for it."},
+        {t:'Practice juggling', d:'Keep the ball off the ground using feet, thighs and head to build overall touch.', l:'Start with just a few juggles and build up. Even 5 minutes of juggling a day noticeably improves your first touch over a few weeks.'},
+        {t:'Receive with your far foot', d:"When a defender is close, control the ball with the foot furthest from them.", l:'This puts your body between the ball and the defender, protecting it the moment it arrives. Practice with a partner jogging beside you as you receive a pass.'}
+      ],
+      speed:[
+        {t:'Learn proper sprinting posture', d:'Lean slightly forward, drive your knees up, and pump your arms.', l:"Good sprint form: chest slightly forward, arms driving front to back (not across your body), knees lifting rather than shuffling. Bad posture wastes energy you need for the ball."},
+        {t:'Warm up dynamically', d:'Use leg swings, lunges and high knees before any speed work — not static stretching.', l:'Static stretches (holding a stretch) before running can actually reduce power output. Save those for after training and warm up instead with movement-based drills like high knees and butt kicks.'},
+        {t:'Practice short acceleration bursts', d:'Sprint 10–15 metres at a time with full recovery between reps.', l:"Most sprints in a match are short and sudden. Train that way: explosive 10-15m bursts from a standing or jogging start, walking back to fully recover before the next one."},
+        {t:'Work on your first step', d:'Focus on a quick, powerful first step rather than top speed.', l:"Reacting a fraction of a second faster than a defender often matters more than being the fastest runner. Practice reacting to a coach's or partner's clap or call and exploding off the mark."},
+        {t:'Build a fitness base', d:'Mix in light jogging and simple interval running to build the engine under your speed.', l:"You need aerobic fitness to recover between sprints during a match. Two or three easy jogs a week, plus one interval session, builds that base without wearing out your legs."}
+      ]
+    }
+  },
+  {
+    id:'intermediate', name:'Intermediate', color:'var(--intermediate)',
+    tagline:"For players comfortable with the basics who are ready to add pace, disguise and decision-making under pressure.",
+    skills:{
+      shooting:[
+        {t:'Take a touch before shooting', d:'Set the ball into your shooting stride with a touch instead of shooting from a dead ball.', l:'In a match the ball rarely sits still for you. Practice receiving a pass and, in one or two touches, setting it up perfectly for a strike — this is the touch most beginners skip.'},
+        {t:'Shoot off both feet', d:'Get comfortable finishing with either foot, not just your strong one.', l:'Set up shooting reps where you alternate feet every rep. It will be noticeably weaker on your other foot at first — track your accuracy over a few weeks to see the improvement.'},
+        {t:'Learn to bend the ball', d:'Strike across the ball with the inside of your foot to curl it around a defender or keeper.', l:'Contact the outer half of the ball with the inside of your foot and follow through across your body rather than straight through. This puts spin on the ball that curls it in flight.'},
+        {t:'Shoot first-time from a pass', d:'Practice striking the ball cleanly on the first touch, without controlling it first.', l:'Have a partner feed you balls from different angles and try to strike first time. This is a timing skill — start with slow, easy feeds and build up to faster, awkward ones.'},
+        {t:'Add power without losing accuracy', d:'Build up strike speed gradually while keeping your shots low and on target.', l:"A powerful shot that misses the frame is worthless. Add pace to your shots in stages, checking your accuracy doesn't drop as your power increases."}
+      ],
+      dribbling:[
+        {t:'Learn step-overs and feints', d:'Use body feints to sell one direction before going the other way.', l:"A step-over only works if your upper body and eyes sell the fake too. Practice in front of a mirror or on video to check your whole body is committing to the feint, not just your feet."},
+        {t:'Change pace to beat defenders', d:'Slow down to draw a defender in, then explode past them.', l:"Most young players dribble at one speed. Practice approaching a defender slowly, almost stopping, then accelerating hard past them the moment they commit."},
+        {t:'Practice tight turns', d:'Learn the Cruyff turn and the drag-back to spin away from pressure.', l:'The Cruyff turn: fake a pass or shot, then drag the ball behind your standing leg and turn. The drag-back: pull the ball back with the sole of your foot while pivoting. Both need a low center of gravity.'},
+        {t:'Dribble under light pressure', d:"Add a passive defender to your dribbling drills so you're reading a real opponent.", l:"Cone drills teach your feet, but a defender teaches your decision-making. Start with a partner at 50% effort, gradually increasing pressure as your control holds up."},
+        {t:'Combine moves into combos', d:'Chain two or three moves together instead of relying on just one.', l:'A single move is easier for defenders to read the more they see it. Practice linking a step-over into a drag-back, or a change of pace into a body feint, so you have layered options.'}
+      ],
+      control:[
+        {t:'One-touch control under pressure', d:'Practice bringing the ball under control and away from a defender in a single touch.', l:'Have a partner apply light pressure as a ball is played to you. Your first touch should go into space away from them, not straight to your feet where they can win it.'},
+        {t:'Control passes while moving', d:'Practice receiving the ball while jogging or running, not just standing still.', l:"Matches rarely give you a standing start. Have a partner pass to you as you jog across a grid, focusing on a touch that keeps your momentum going forward."},
+        {t:'Bring down long balls', d:'Use your chest or thigh to cushion balls dropping from height, not just your feet.', l:'Get your body behind the flight of the ball, present a soft chest or thigh, and let it drop to your feet rather than bouncing away. Practice with a partner throwing balls in a high arc.'},
+        {t:'Turn on your first touch', d:'Receive the ball with a touch that spins you to face forward instead of receiving square-on.', l:"Receiving side-on and rolling your foot over the ball as it arrives lets you turn and face the play in one movement, saving a second touch a defender could close down."},
+        {t:'Juggle combinations', d:'Chain foot, thigh and head touches together to build all-around ball feel.', l:'Try sequences like foot-thigh-foot-head, counting how many you can string together without the ball hitting the ground. This builds the touch that transfers into match situations.'}
+      ],
+      speed:[
+        {t:'Agility ladder drills', d:'Use footwork ladders to sharpen quick, precise foot placement.', l:"Ladder drills like in-in-out-out or lateral shuffles build the fast, controlled footwork that underpins quick changes of direction on the ball."},
+        {t:'Cone drills for change of direction', d:'Run patterns like the T-drill or 5-10-5 to train sharp cuts at speed.', l:'These drills train you to decelerate, plant, and re-accelerate in a new direction — the exact movement pattern used to beat a defender or track back.'},
+        {t:'Interval sprints', d:'Repeat short sprints with brief recovery to build repeated sprint ability.', l:'Try 6-8 sprints of 20-30m with 20-30 seconds rest between. This trains your ability to sprint again and again through a match, not just once.'},
+        {t:'Reactive starts', d:'Practice sprinting off a visual or audio cue instead of a countdown.', l:"Have a partner drop a ball, point a direction, or call a number, and sprint the instant you react. This trains the reaction speed that matters more than raw pace in games."},
+        {t:'Strength work for speed', d:'Add bodyweight squats, lunges and core work to support your sprinting.', l:'Stronger legs and a stable core let you apply more force into the ground with each stride. Two sessions a week of squats, lunges and planks is enough to notice a difference.'}
+      ]
+    }
+  },
+  {
+    id:'advanced', name:'Advanced', color:'var(--advanced)',
+    tagline:'Match-speed technique for players refining the fine margins — under pressure, at pace, and making the right decision fast.',
+    skills:{
+      shooting:[
+        {t:'Shoot under pressure', d:'Practice finishing with a defender closing you down, not in open space.', l:"Add a chasing defender to your finishing drills so you learn to get your shot away under real time pressure, not the unlimited time of an empty net."},
+        {t:'Master finesse and power', d:'Be equally comfortable placing a shot into the corner or driving one with pace.', l:"Read the situation: a crowded box calls for a placed finesse shot, while more space and distance often calls for pace and power. Train both so you're not one-dimensional."},
+        {t:'Volleys and half-volleys', d:'Practice striking balls out of the air or on the half-bounce, not just on the ground.', l:'Timing is everything here. Start with a partner tossing gentle, predictable balls, and work up to game-speed crosses and bouncing balls.'},
+        {t:'Shoot on the run at full pace', d:'Practice striking the ball cleanly while sprinting, not jogging.', l:'Set up drills where you receive a through-ball at speed and must finish without breaking stride — this is much harder to time than a stationary or slow-approach shot.'},
+        {t:'Finish from tight angles', d:'Practice 1v1s against a keeper from the edges of the box, not just straight on.', l:"From a tight angle you often need to place the ball to the far post or across the keeper rather than powering it — practice this specific finish repeatedly."}
+      ],
+      dribbling:[
+        {t:'Beat defenders in tight spaces', d:'Practice 1v1 moves in small grids where there is no room to just run past.', l:'Work in a 5x5m grid against a live defender — you have to rely on close control and quick feet, not open space, to get past them.'},
+        {t:'Disguise at match speed', d:"Perform feints and moves at full pace, not the slow, exaggerated tempo used to learn them.", l:'Once a move is second nature, practice it at game speed. A feint that is too slow gives defenders time to read and recover.'},
+        {t:'Dribble at speed while scanning', d:'Keep your head up to read the field even while dribbling at full pace.', l:"This is one of the hardest combinations in the game. Practice dribbling at speed through a grid while a coach holds up numbers or colors for you to call out."},
+        {t:'Combine moves with fast decisions', d:'Choose which move to use in the moment, based on how the defender is set up.', l:"Rather than planning a move in advance, practice reading the defender's body weight and stance, then choosing the move that beats it."},
+        {t:'Dribble out of tight pressure', d:'Practice receiving the ball in traffic and dribbling your way clear.', l:'Set up a drill where you receive the ball surrounded by 2-3 defenders and must use quick touches and body control to escape the pressure.'}
+      ],
+      control:[
+        {t:'Receive with your back to goal', d:'Practice controlling the ball under pressure while facing away from where you want to go.', l:"This is a core striker and midfield skill — cushion the ball, shield it with your body, and either turn or lay it off, all while a defender is tight on your back."},
+        {t:'First touch sets up the next action', d:'Every touch should have a purpose — into space, away from a defender, or into a shot.', l:'Before the ball arrives, decide what your first touch needs to achieve, then execute the touch to serve that plan rather than just controlling it and deciding after.'},
+        {t:'Control high balls cleanly', d:'Bring down balls dropping from height with a single controlling touch.', l:"Practice with balls served from long distances or thrown high, focusing on cushioning the ball dead on the first touch even under a defender's pressure."},
+        {t:'Combination play', d:'Practice quick one-twos and lay-offs with a teammate under pressure.', l:'Work in small groups passing and moving at speed, focusing on a first touch that sets up an immediate, accurate pass rather than a heavy touch that slows the move down.'},
+        {t:'Game-speed control', d:'Practice all of the above at match tempo, with decisions made in real time.', l:'Combine control drills with small-sided games so your technique holds up when you also have to read the game and make decisions at the same time.'}
+      ],
+      speed:[
+        {t:'Max velocity mechanics', d:'Refine your sprinting form at top speed, not just your acceleration phase.', l:'Top-speed running uses a more upright posture than acceleration. Work with a coach or video yourself to check your form holds together once you hit full speed.'},
+        {t:'Repeated high-intensity sets', d:'Train multiple sprint efforts with match-realistic recovery windows.', l:"Try sets of 8-10 sprints of 15-40m with recovery times that mimic a match, so your legs learn to produce speed again and again through 90 minutes."},
+        {t:'Speed with and without the ball', d:'Train sprinting technique both on its own and while dribbling at pace.', l:"Speed with the ball is a different skill from raw sprinting — practice both separately and combined so pace doesn't disappear the moment the ball's at your feet."},
+        {t:'Explosive first-step training', d:'Use jump and bound exercises to build the power behind your first step.', l:'Broad jumps, bounds, and short hill sprints build the explosive power that translates into a faster first step in games.'},
+        {t:'Recovery and mobility', d:'Prioritize sleep, stretching and mobility work to sustain top speed over a season.', l:"Speed training breaks your body down — recovery is what lets it adapt and get faster. Build in mobility work and rest days rather than sprinting flat-out every session."}
+      ]
+    }
+  }
+];
+
+/* ===========================================================
+   RENDER
+=========================================================== */
+const tierGrid = document.getElementById('tierGrid');
+const levelSections = document.getElementById('levelSections');
+
+LEVELS.forEach((level, idx) => {
+  // tier picker card
+  const skillList = Object.keys(level.skills).map(k => SKILL_NAMES[k]).join(', ');
+  const card = document.createElement('a');
+  card.href = '#' + level.id;
+  card.className = 'tier-card';
+  card.style.setProperty('--tier-color', level.color);
+  card.innerHTML = `
+    <div class="tier-num">0${idx + 1}</div>
+    <h3>${level.name}</h3>
+    <p>${level.tagline}</p>
+    <div class="tier-skills">${Object.keys(level.skills).map(k => `<span>${SKILL_NAMES[k]}</span>`).join('')}</div>
+  `;
+  tierGrid.appendChild(card);
+
+  // level section
+  const section = document.createElement('section');
+  section.className = 'level-section';
+  section.id = level.id;
+  section.style.setProperty('--tier-color', level.color);
+
+  const skillsHTML = Object.entries(level.skills).map(([skillKey, tips]) => {
+    const tipsHTML = tips.map((tip, i) => `
+      <button class="tip-row" data-level="${level.id}" data-levelname="${level.name}" data-skill="${skillKey}" data-skillname="${SKILL_NAMES[skillKey]}" data-index="${i}">
+        <span class="tip-num">${i + 1}</span>
+        <span class="tip-copy">
+          <h4>${tip.t}</h4>
+          <p>${tip.d}</p>
+        </span>
+        <span class="tip-open">
+          Open
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg>
+        </span>
+      </button>
+    `).join('');
+
+    return `
+      <div class="skill-card" data-skill-card="${level.id}-${skillKey}">
+        ${ICONS[skillKey]}
+        <h3>${SKILL_NAMES[skillKey]}</h3>
+        <span class="count">5 ways to improve</span>
+        <button class="expand" data-target="${level.id}-${skillKey}">
+          View the 5 tips
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+        </button>
+      </div>
+      <div class="tip-list" id="tips-${level.id}-${skillKey}">${tipsHTML}</div>
+    `;
+  }).join('');
+
+  section.innerHTML = `
+    <div class="wrap">
+      <div class="level-head">
+        <span class="tag">Level 0${idx + 1}</span>
+        <h2>${level.name}</h2>
+      </div>
+      <p class="level-tagline">${level.tagline}</p>
+      <div class="skills-grid">${skillsHTML}</div>
+    </div>
+  `;
+  levelSections.appendChild(section);
+});
+
+/* expand / collapse skill tip lists */
+levelSections.addEventListener('click', (e) => {
+  const btn = e.target.closest('button.expand');
+  if (!btn) return;
+  const targetId = btn.dataset.target;
+  const list = document.getElementById('tips-' + targetId);
+  const card = btn.closest('.skill-card');
+  const isOpen = list.classList.toggle('visible');
+  card.classList.toggle('open', isOpen);
+  btn.firstChild.textContent = isOpen ? 'Hide tips ' : 'View the 5 tips ';
+});
+
+/* ===========================================================
+   MODAL
+=========================================================== */
+const backdrop = document.getElementById('modalBackdrop');
+const modalTier = document.getElementById('modalTier');
+const modalTitle = document.getElementById('modalTitle');
+const modalDesc = document.getElementById('modalDesc');
+const modalVideoPath = document.getElementById('modalVideoPath');
+const modalVideoBox = document.getElementById('modalVideo');
+
+function slugify(str){ return str.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, ''); }
+
+levelSections.addEventListener('click', (e) => {
+  const row = e.target.closest('.tip-row');
+  if (!row) return;
+  const { level, levelname, skill, skillname, index } = row.dataset;
+  const tip = LEVELS.find(l => l.id === level).skills[skill][index];
+
+  modalTier.textContent = `${levelname} · ${skillname}`;
+  modalTier.style.color = LEVELS.find(l => l.id === level).color;
+  modalVideoBox.style.setProperty('--tier-color', LEVELS.find(l => l.id === level).color);
+  modalTitle.textContent = tip.t;
+  modalDesc.textContent = tip.l;
+  modalVideoPath.textContent = `videos/${level}-${slugify(skill)}-${Number(index) + 1}.mp4`;
+
+  backdrop.classList.add('open');
+  document.body.style.overflow = 'hidden';
+});
+
+function closeModal(){
+  backdrop.classList.remove('open');
+  document.body.style.overflow = '';
+}
+document.getElementById('modalClose').addEventListener('click', closeModal);
+backdrop.addEventListener('click', (e) => { if (e.target === backdrop) closeModal(); });
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
+
+/* ===========================================================
+   NAV: highlight active level tab on scroll
+=========================================================== */
+const tabs = document.querySelectorAll('.level-tabs a');
+const sections = LEVELS.map(l => document.getElementById(l.id));
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting){
+      tabs.forEach(t => t.classList.toggle('active', t.getAttribute('href') === '#' + entry.target.id));
+    }
+  });
+}, { rootMargin: '-40% 0px -50% 0px' });
+sections.forEach(s => observer.observe(s));
+</script>
+</body>
+</html>
